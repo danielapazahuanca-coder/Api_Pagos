@@ -1,5 +1,8 @@
 # Payments API
 
+## Comando para clonar repositorio
+git clone https://github.com/danielapazahuanca-coder/Api_Pagos.git
+
 ## Tecnologías
 - .NET 8
 - SQL Server
@@ -19,3 +22,4 @@
 ## Logs
 Se generean logs  en la siguiente ruta  D:\\Logs\\PaymentsApi\\log-.txt
 <img width="531" height="161" alt="image" src="https://github.com/user-attachments/assets/4c12d55b-5fb2-47db-8421-27320cdf3d74" />
+
