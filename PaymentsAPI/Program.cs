@@ -2,9 +2,22 @@ using Microsoft.EntityFrameworkCore;
 using PaymentsApi.Data;
 using PaymentsAPI.Repository;
 using PaymentsAPI.Services;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var logPath = @"D:\Logs\PaymentsApi";
+if (!Directory.Exists(logPath))
+{
+    Directory.CreateDirectory(logPath);
+}
+builder.Host.UseSerilog((context, services, configuration) =>
+{
+    configuration
+        .ReadFrom.Configuration(context.Configuration)
+        .ReadFrom.Services(services)
+        .Enrich.FromLogContext();
+});
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();

@@ -10,22 +10,29 @@ namespace PaymentsAPI.Controllers
     public class PaymentsController : ControllerBase
     {
         private readonly IPaymentService _service;
+        private readonly ILogger<PaymentsController> _logger;
 
-        public PaymentsController(IPaymentService service)
+        public PaymentsController(IPaymentService service, ILogger<PaymentsController> logger)
         {
             _service = service;
+            _logger = logger;
         }
 
         [HttpPost]
         public async Task<IActionResult> CreatePayment(CreatePaymentRequest request)
         {
+            _logger.LogInformation("Iniciando registro de pago para CustomerId {CustomerId}", request.CustomerId);
+
             try
             {
                 await _service.CreatePaymentAsync(request);
+                _logger.LogInformation("Pago registrado correctamente para CustomerId {CustomerId}", request.CustomerId);
+
                 return Ok(new { message = "Pago registrado correctamente" });
             }
-            catch (SqlException ex)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "Error al registrar pago para CustomerId {CustomerId}", request.CustomerId);
                 return BadRequest(new { error = ex.Message });
             }
         }

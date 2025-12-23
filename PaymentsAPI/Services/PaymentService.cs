@@ -7,16 +7,23 @@ namespace PaymentsAPI.Services
     public class PaymentService : IPaymentService
     {
         private readonly IPaymentRepository _repository;
+        private readonly ILogger<PaymentService> _logger;
 
-        public PaymentService(IPaymentRepository repository)
+        public PaymentService(IPaymentRepository repository, ILogger<PaymentService> logger)
         {
             _repository = repository;
+            _logger = logger;
         }
 
         public async Task CreatePaymentAsync(CreatePaymentRequest request)
         {
+            _logger.LogInformation("Validando pago. Monto: {Amount}", request.Amount);
+
             if (request.Amount > 1500)
+            {
+                _logger.LogWarning("Monto inválido: {Amount}", request.Amount);
                 throw new ArgumentException("El monto no puede superar los 1500 Bs.");
+            }
 
             var payment = new Payment
             {
